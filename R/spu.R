@@ -73,4 +73,29 @@ plot_first_actions = function(data) {
   mapview(first_actions, zcol = "action", legend = TRUE)
 }
 
+
+#' Draw map showing a path of a user over time
+#'
+#' @param data An spu object containing the data to be displayed
+#' @param user_id The identifier of one user
+#'
+#' @importFrom mapview mapview
+#' @export
+#'
+#' @examples
+plot_user_path = function(data, user_id) {
+  user_data = data
+  user_data$datetime = as.numeric(user_data$datetime)
+  user_data = user_data %>% filter(user == user_id) %>% arrange(datetime)
+  user_path = data.frame(user_data %>% st_coordinates())
+
+  # Create a palette that maps datetime to colors
+  pal = colorFactor(c("green", "red"), domain = user_data$datetime)
+  map = leaflet() %>%
+    addTiles() %>%
+    addPolylines(data = user_path, lng = ~X, lat = ~Y) %>%
+    addCircles(data = user_data, popup = ~action, color = ~pal(datetime))
+  map
+}
+
 x = read.spu("dummy_data.csv")
