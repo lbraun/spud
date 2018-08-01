@@ -2,10 +2,6 @@
 #' @importFrom utils read.table
 NULL
 
-library(sf)
-library(mapview)
-library(leaflet)
-
 # spu: R classes and methods for spatial app usage data
 
 # install.packages("leaflet")
@@ -17,6 +13,8 @@ library(leaflet)
 #' @param crs The coordinate reference system of the data.
 #'
 #' @return The resulting spu object.
+#'
+#' @importFrom sf st_as_sf
 #' @export
 #'
 #' @examples
@@ -32,6 +30,7 @@ read.spu = function(file, crs = 4326) {
 #'
 #' @param data An spu oject containing the data to be displayed
 #'
+#' @importFrom leaflet colorFactor leaflet addTiles addCircles addLegend %>%
 #' @export
 #'
 #' @examples
@@ -49,6 +48,7 @@ plot_usage_actions_leaflet = function(data) {
 #'
 #' @param data An spu oject containing the data to be displayed
 #'
+#' @importFrom mapview mapview
 #' @export
 #'
 #' @examples
