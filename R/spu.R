@@ -1,12 +1,22 @@
 #' @importFrom graphics plot
 #' @importFrom utils read.table
+NULL
 
 # spu: R classes and methods for spatial app usage data
 
 # install.packages("leaflet")
 
-read.spu = function(file, header = TRUE, sep = ",") {
-  spu_object = read.table(system.file("extdata", file, package = "spu"), header = header, sep = sep)
+
+#' Read data from a csv file in the extdata directory.
+#'
+#' @param file The name of the file you want to read in.
+#'
+#' @return The resulting spu object.
+#' @export
+#'
+#' @examples
+read.spu = function(file) {
+  spu_object = read.table(system.file("extdata", file, package = "spu"), , header = TRUE, sep = ",")
   spu_object$datetime = strptime(spu_object$datetime, "%Y-%m-%d %H:%M:%S")
   class(spu_object) = append("spu", class(spu_object))
   spu_object
