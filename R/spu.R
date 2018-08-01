@@ -1,10 +1,12 @@
+#' @importFrom graphics plot
+#' @importFrom utils read.table
+
 # spu: R classes and methods for spatial app usage data
 
 # install.packages("leaflet")
 
 read.spu = function(file, header = TRUE, sep = ",") {
-  spu_object = read.table(file = file, header = header, sep = sep)
-  spu_object = read.table(system.file("extdata", file, package = "trackz"))
+  spu_object = read.table(system.file("extdata", file, package = "spu"), header = header, sep = sep)
   spu_object$datetime = strptime(spu_object$datetime, "%Y-%m-%d %H:%M:%S")
   class(spu_object) = append("spu", class(spu_object))
   spu_object
@@ -18,16 +20,16 @@ data = read.spu("dummy_data.csv")
 
 plot(data$latitude, data$longitude)
 
-web_mercator = CRS("+init=epsg:3857")
+# web_mercator = CRS("+init=epsg:3857")
 
-library(ggmap)
-bgMap = get_map(as.vector(bbox(data)), source = "google", zoom = 13)
-par(mar = rep(0,4))
-plot(data, bgMap = bgMap, pch = 16, cex = .5)
+# library(ggmap)
+# bgMap = get_map(as.vector(bbox(data)), source = "google", zoom = 13)
+# par(mar = rep(0,4))
+# plot(data, bgMap = bgMap, pch = 16, cex = .5)
 
 
 popup = function(datetime, action, user) {
-  stringr::str_interp("datetime: ${datetime}\naction: ${action}\nuser: ${user}\n")
+  str_interp("datetime: ${datetime}\naction: ${action}\nuser: ${user}\n")
 }
 
 library(leaflet)
