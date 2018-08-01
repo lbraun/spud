@@ -7,7 +7,7 @@
 plot_usage_actions(data)
 }
 \arguments{
-\item{data}{An spu oject containing the data to be displayed}
+\item{data}{An spu object containing the data to be displayed}
 }
 \description{
 Draw map showing spatial distribution of usage actions using mapview

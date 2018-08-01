@@ -4,9 +4,6 @@ NULL
 
 # spu: R classes and methods for spatial app usage data
 
-# install.packages("leaflet")
-
-
 #' Read data from a csv file in the extdata directory.
 #'
 #' @param file The name of the file you want to read in.
@@ -21,32 +18,32 @@ NULL
 read.spu = function(file, crs = 4326) {
   data = read.table(system.file("extdata", file, package = "spu"), header = TRUE, sep = ",")
   data$datetime = strptime(data$datetime, "%Y-%m-%d %H:%M:%S")
-  spu_object = st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
+  spu_object = sf::st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
   # class(spu_object) = append(class(spu_object), "spu")
   spu_object
 }
 
 #' Draw map showing spatial distribution of usage actions using leaflet
 #'
-#' @param data An spu oject containing the data to be displayed
+#' @param data An spu object containing the data to be displayed
 #'
 #' @importFrom leaflet colorFactor leaflet addTiles addCircles addLegend %>%
 #' @export
 #'
 #' @examples
 plot_usage_actions_leaflet = function(data) {
-  # Create a palette that maps factor levels to colors
+  # Create a palette that maps actions to colors
   pal = colorFactor(c("navy", "red"), domain = data$action)
-  m = leaflet(data) %>%
+  map = leaflet(data) %>%
     addTiles() %>%
     addCircles(popup = ~action, color = ~pal(action)) %>%
     addLegend(pal = pal, values = ~action, opacity = 1)
-  m
+  map
 }
 
 #' Draw map showing spatial distribution of usage actions using mapview
 #'
-#' @param data An spu oject containing the data to be displayed
+#' @param data An spu object containing the data to be displayed
 #'
 #' @importFrom mapview mapview
 #' @export
@@ -54,6 +51,26 @@ plot_usage_actions_leaflet = function(data) {
 #' @examples
 plot_usage_actions = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
+}
+
+x = read.spu("dummy_data.csv")
+
+
+#' Draw map showing locations where users tried the app for the first time
+#'
+#' @param data An spu object containing the data to be displayed
+#'
+#' @importFrom mapview mapview
+#' @importFrom dplyr group_by top_n
+#' @export
+#'
+#' @examples
+plot_first_actions = function(data) {
+  first_actions = data
+  first_actions$datetime = as.numeric(first_actions$datetime)
+  first_actions = first_actions %>% group_by(user) %>% top_n(1, datetime)
+  first_actions$datetime = as.POSIXct(first_actions$datetime, origin='1970-01-01')
+  mapview(first_actions, zcol = "action", legend = TRUE)
 }
 
 x = read.spu("dummy_data.csv")
