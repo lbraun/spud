@@ -4,10 +4,12 @@
 \alias{read.spu}
 \title{Read data from a csv file in the extdata directory.}
 \usage{
-read.spu(file)
+read.spu(file, crs = 4326)
 }
 \arguments{
 \item{file}{The name of the file you want to read in.}
+
+\item{crs}{The coordinate reference system of the data.}
 }
 \value{
 The resulting spu object.

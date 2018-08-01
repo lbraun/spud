@@ -14,6 +14,7 @@ library(leaflet)
 #' Read data from a csv file in the extdata directory.
 #'
 #' @param file The name of the file you want to read in.
+#' @param crs The coordinate reference system of the data.
 #'
 #' @return The resulting spu object.
 #' @export
