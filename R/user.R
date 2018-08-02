@@ -27,7 +27,7 @@
 #' @importFrom R6 R6Class
 #' @name User
 #' @examples
-#' x = read.spu("dummy_data.csv")
+#' x = read.spud("dummy_data.csv")
 #' user <- User$new("User 1", x)
 #'
 NULL

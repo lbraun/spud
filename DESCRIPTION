@@ -1,4 +1,4 @@
-Package: spu
+Package: spud
 Version: 0.0.0.9000
 Title: Classes and Methods for Spatial Usage Data
 Description: Classes to represent how data subjects use location-based applications. Includes utility functions to visualize and analyze the way people use your application.
@@ -16,7 +16,7 @@ Imports:
     leaflet,
     dplyr,
     R6
-Suggests: 
+Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr

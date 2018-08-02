@@ -35,7 +35,7 @@ print(user)
 }
 
 \examples{
-x = read.spu("dummy_data.csv")
+x = read.spud("dummy_data.csv")
 user <- User$new("User 1", x)
 
 }

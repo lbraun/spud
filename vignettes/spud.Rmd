@@ -28,18 +28,18 @@ Usage data from location-based services has unique properties. Each event is ass
 
 ## Input
 
-The spu package is made to import data from a csv that looks something like this:
+The spud package is made to import data from a csv that looks something like this:
 
 ```{r, echo=FALSE, results='asis'}
-x = read.table(system.file("extdata", "dummy_data.csv", package = "spu"), header = TRUE, sep = ",")
+x = read.table(system.file("extdata", "dummy_data.csv", package = "spud"), header = TRUE, sep = ",")
 knitr::kable(data.frame(head(x, 10)))
 ```
 
-This is achieved with the read.spu method, which takes the source file's name and the coordinate reference system of the data as parameters.
+This is achieved with the read.spud method, which takes the source file's name and the coordinate reference system of the data as parameters.
 
 ```{r}
-library(spu)
-x = read.spu("dummy_data.csv", crs = 4326)
+library(spud)
+x = read.spud("dummy_data.csv", crs = 4326)
 x
 ```
 

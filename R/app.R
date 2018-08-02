@@ -28,7 +28,7 @@
 #' @importFrom R6 R6Class
 #' @name App
 #' @examples
-#' x = read.spu("dummy_data.csv")
+#' x = read.spud("dummy_data.csv")
 #' app = App$new("My app", x)
 #'
 NULL

@@ -36,7 +36,7 @@ print(app)
 }
 
 \examples{
-x = read.spu("dummy_data.csv")
+x = read.spud("dummy_data.csv")
 app = App$new("My app", x)
 
 }

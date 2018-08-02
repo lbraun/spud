@@ -2,33 +2,33 @@
 #' @importFrom utils read.table
 NULL
 
-# spu: R classes and methods for spatial app usage data
+# spud: R classes and methods for spatial app usage data
 
 #' Read data from a csv file in the extdata directory.
 #'
 #' @param file The name of the file you want to read in.
 #' @param crs The coordinate reference system of the data.
 #'
-#' @return The resulting spu object.
+#' @return The resulting spud object.
 #'
 #' @importFrom sf st_as_sf
 #' @export
 #'
 #' @examples
-read.spu = function(file, crs = 4326) {
-  data = read.table(system.file("extdata", file, package = "spu"), header = TRUE, sep = ",")
+read.spud = function(file, crs = 4326) {
+  data = read.table(system.file("extdata", file, package = "spud"), header = TRUE, sep = ",")
   data$datetime = as.POSIXct(strptime(data$datetime, "%Y-%m-%d %H:%M:%S"))
-  spu_object = sf::st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
-  spu_object
+  spud_object = sf::st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
+  spud_object
 }
 
-appify = function(spu_object) {
-  App$new(name = "My fancy app", usage_data = spu_object)
+appify = function(spud_object) {
+  App$new(name = "My fancy app", usage_data = spud_object)
 }
 
 #' Draw map showing spatial distribution of usage actions using leaflet
 #'
-#' @param data An spu object containing the data to be displayed
+#' @param data A spud object containing the data to be displayed
 #'
 #' @importFrom leaflet colorFactor leaflet addTiles addCircles addLegend %>%
 #' @export
@@ -46,7 +46,7 @@ plot_usage_actions_leaflet = function(data) {
 
 #' Draw map showing spatial distribution of usage actions using mapview
 #'
-#' @param data An spu object containing the data to be displayed
+#' @param data A spud object containing the data to be displayed
 #'
 #' @importFrom mapview mapview
 #' @export
@@ -56,12 +56,12 @@ plot_usage_actions_mapview = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
 }
 
-x = read.spu("dummy_data.csv")
+x = read.spud("dummy_data.csv")
 
 
 #' Draw map showing locations where users tried the app for the first time
 #'
-#' @param data An spu object containing the data to be displayed
+#' @param data A spud object containing the data to be displayed
 #'
 #' @importFrom mapview mapview
 #' @importFrom dplyr group_by top_n
@@ -79,7 +79,7 @@ plot_first_actions = function(data) {
 
 #' Draw map showing a path of a user over time
 #'
-#' @param data An spu object containing the data to be displayed
+#' @param data A spud object containing the data to be displayed
 #' @param user_id The identifier of one user
 #'
 #' @importFrom mapview mapview
@@ -102,5 +102,5 @@ plot_user_path = function(data, user_id) {
   map
 }
 
-x = read.spu("dummy_data.csv")
+x = read.spud("dummy_data.csv")
 app = appify(x)
