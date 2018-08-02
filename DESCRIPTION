@@ -14,7 +14,8 @@ Imports:
     sf,
     mapview,
     leaflet,
-    dplyr
+    dplyr,
+    R6
 Suggests: 
     knitr,
     rmarkdown

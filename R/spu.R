@@ -17,10 +17,13 @@ NULL
 #' @examples
 read.spu = function(file, crs = 4326) {
   data = read.table(system.file("extdata", file, package = "spu"), header = TRUE, sep = ",")
-  data$datetime = strptime(data$datetime, "%Y-%m-%d %H:%M:%S")
+  data$datetime = as.POSIXct(strptime(data$datetime, "%Y-%m-%d %H:%M:%S"))
   spu_object = sf::st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
-  # class(spu_object) = append(class(spu_object), "spu")
   spu_object
+}
+
+appify = function(spu_object) {
+  App$new(name = "My fancy app", usage_data = spu_object)
 }
 
 #' Draw map showing spatial distribution of usage actions using leaflet
@@ -100,3 +103,4 @@ plot_user_path = function(data, user_id) {
 }
 
 x = read.spu("dummy_data.csv")
+app = appify(x)
