@@ -49,7 +49,7 @@ plot_usage_actions_leaflet = function(data) {
 #' @export
 #'
 #' @examples
-plot_usage_actions = function(data) {
+plot_usage_actions_mapview = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
 }
 

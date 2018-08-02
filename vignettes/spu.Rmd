@@ -16,6 +16,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r}
+library(sf)
+library(mapview)
+library(leaflet)
+library(dplyr)
+```
+
+
 Usage data from location-based services has unique properties. Each event is associated with at least one user, time, and place. However, one or more of these properties is often removed from data in the interest of user privacy.
 
 ## Input
@@ -29,12 +37,26 @@ knitr::kable(data.frame(head(x, 10)))
 
 This is achieved with the read.spu method, which takes the source file's name and the coordinate reference system of the data as parameters.
 
-## Maps
-
-If the data contains information on the action a user was taking at the time of measurement, the `plot_usage_actions` method is useful to see how the use of the app is influenced by space.
-
 ```{r}
 library(spu)
-x = read.spu("dummy_data.csv")
-plot_usage_actions(x)
+x = read.spu("dummy_data.csv", crs = 4326)
+x
 ```
+
+## Maps
+
+If the data contains information on the action a user was taking at the time of measurement, the `plot_usage_actions` method is useful to see how the use of the app is influenced by space. This can be done either with leaflet or with mapview:
+
+```{r}
+plot_usage_actions_leaflet(x)
+plot_usage_actions_mapview(x)
+```
+
+```{r}
+plot_first_actions(x)
+```
+
+```{r}
+plot_user_path(x, 1)
+```
+
