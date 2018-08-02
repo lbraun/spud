@@ -157,3 +157,21 @@ The plotting of user paths is also generalized, to allow multiple user paths to 
 plot_user_path(data = spud, user_id = 1)
 ```
 
+## Development notes
+
+### Package check
+
+The package checks cleanly on my machine except for one note, which complains about the dplyr syntax in the `plot_user_path` method. dplyr allows you to refer to previously undeclared variables in its `filter` and `arrange` functions, but the package checker thinks these are global variables without a proper definition.
+
+### Future work
+
+There are many ways I would like to expand this package if I have time. Here are a few of the tasks that didn't fit into the initial development time frame:
+
+  * Add flexibility and control to all methods, such as:
+    * Filtering (by dates, by actions, etc.)
+    * Custom definitions of data variable names (e.g. "lng" instead of "longitude", "feature" instead of "action", etc.)
+  * Add more validation to methods to ensure parameters are correct
+  * Implement a method to display user actions as a heat map
+  * Implement a method to map areas with high potential for user interaction
+  * Implement methods to display statistics (such as most common actions, popular times of day to use the app)
+  * Implement methods to perform more spatial analysis (such as correlation between location and a given action)

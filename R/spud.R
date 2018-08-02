@@ -1,4 +1,29 @@
-# spud: R classes and methods for spatial app usage data
+#' spud: R classes and methods for spatial usage data
+#'
+#' The spud package aims to give researchers and app developers an easy way to
+#' visualize and analyze how and where people use a given service.
+#'
+#' @section Methods:
+#' Get started with spud using the \code{read.spud} method on the dummy data provided
+#' with the package. Run \code{read.spud("dummy_data.csv")} and try out any of the
+#' main exposed methods:
+#'
+#' - plot_usage_actions_leaflet
+#'
+#' - plot_usage_actions_mapview
+#'
+#' - plot_user_path
+#'
+#' Alternatively use the data to initialize a spud class.
+#'
+#' @section Classes:
+#' There are two classes included in spud, App and User, which represent an
+#' application and its users, respectively. See the relevant documentation
+#' pages for more details.
+#'
+#' @docType package
+#' @name spud
+NULL
 
 #' Read data from csv files in the extdata directory.
 #'
@@ -67,22 +92,6 @@ plot_usage_actions_leaflet = function(data) {
 #' @export
 plot_usage_actions_mapview = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
-}
-
-
-#' Draw map showing locations where users tried the app for the first time
-#'
-#' @param data A spud object containing the data to be displayed
-#'
-#' @importFrom mapview mapview
-#' @importFrom dplyr group_by top_n
-#' @export
-plot_first_actions = function(data) {
-  first_actions = data
-  first_actions$datetime = as.numeric(first_actions$datetime)
-  first_actions = first_actions %>% group_by(user) %>% top_n(1, datetime)
-  first_actions$datetime = as.POSIXct(first_actions$datetime, origin='1970-01-01')
-  mapview(first_actions, zcol = "action", legend = TRUE)
 }
 
 
