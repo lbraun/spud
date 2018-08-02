@@ -16,21 +16,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r}
+```{r, echo = FALSE}
 library(sf)
 library(mapview)
 library(leaflet)
 library(dplyr)
+library(spud)
 ```
 
+Spatial usage data is information about where an application is used. Usage data from location-based services has unique properties and challenges. Each record is associated with at least one user, time, and spatial position. However, one or more of these properties is often unavailable or removed from the data in the interest of user privacy. So what can we learn from this data?
 
-Usage data from location-based services has unique properties. Each event is associated with at least one user, time, and place. However, one or more of these properties is often removed from data in the interest of user privacy.
+## Introduction
 
-## Input
+The goal of this package is to give researchers and app developers an easy way to visualize and analyze how and where people use a given service.
 
-The spud package is made to import data from a csv that looks something like this:
+For my thesis I am looking at how to reduce the social isolation of forced-migrants (e.g. refugees and asylum seekers) through the use of location-based services. Such a tool will be particularly useful after I collect data through a real-world study to identify patterns that are not otherwise obvious.
 
-```{r, echo=FALSE, results='asis'}
+## Loading data
+
+The spud package is designed to import data from a csv that looks something like this:
+
+```{r, echo = FALSE, results = 'asis'}
 x = read.table(system.file("extdata", "dummy_data.csv", package = "spud"), header = TRUE, sep = ",")
 knitr::kable(data.frame(head(x, 10)))
 ```
@@ -38,25 +44,70 @@ knitr::kable(data.frame(head(x, 10)))
 This is achieved with the read.spud method, which takes the source file's name and the coordinate reference system of the data as parameters.
 
 ```{r}
-library(spud)
-x = read.spud("dummy_data.csv", crs = 4326)
-x
+spud = read.spud(file = "dummy_data.csv", crs = 4326)
 ```
+
+This method returns a simple feature collection:
+
+```{r, echo = FALSE}
+spud
+```
+
+## Classes
+
+The spud package provides an object-oriented framework for quickly and intuitively exploring spacial usage data. I chose to implement R6 classes because I wanted to learn something new and I read that R6 classes are nice as they resemble classes in other languages.
+
+The spud package's two classes represent the most important objects in a location-based service: the application and its users.
+
+### App class
+
+App is a simple container for application usage data with methods that allow us to visualize the data from a holistic perspective. It is initialized from a simple feature collection, such as the one returned by the `read.spud` method:
+
+```{r}
+app = App$new(name = "My fancy app", usage_data = spud)
+```
+
+The spud package also provides a convenience method `read.spud_app` to load data directly from a file into an App instance:
+
+```{r}
+app = read.spud_app(file = "dummy_data.csv", crs = 4326, name = "My fancy app")
+```
+
+App has a print method defined that allows us to quickly know which app we're looking at:
+
+```{r}
+print(app)
+```
+
+### User class
+
+User is a also simple container for application usage data, but with methods focused on the perspective of _just one user_. It can also be initialized from a file or simple feature collection, but often we simply ask an App to get the user object for us:
+
+```{r}
+user = app$get_user(user_id = 12)
+```
+
+The user also has a print method defined that identifies who we are looking at:
+
+```{r}
+print(user)
+```
+
 
 ## Maps
 
 If the data contains information on the action a user was taking at the time of measurement, the `plot_usage_actions` method is useful to see how the use of the app is influenced by space. This can be done either with leaflet or with mapview:
 
 ```{r}
-plot_usage_actions_leaflet(x)
-plot_usage_actions_mapview(x)
+plot_usage_actions_leaflet(spud)
+plot_usage_actions_mapview(spud)
 ```
 
 ```{r}
-plot_first_actions(x)
+plot_first_actions(spud)
 ```
 
 ```{r}
-plot_user_path(x, 1)
+plot_user_path(spud, 1)
 ```
 
