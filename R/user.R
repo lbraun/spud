@@ -50,7 +50,7 @@ User = R6::R6Class("User",
     },
 
     first_action = function() {
-      self$usage_data %>% arrange(datetime) %>% top_n(1)
+      self$usage_data %>% top_n(1, datetime)
     },
 
     actions_map = function(flavor = "leaflet") {

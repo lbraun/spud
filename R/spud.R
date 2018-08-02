@@ -95,13 +95,12 @@ plot_first_actions = function(data) {
 #'
 #' @examples
 plot_user_path = function(data, user_id) {
-  user_data = data
-  user_data$datetime = as.numeric(user_data$datetime)
-  user_data = user_data %>% filter(user == user_id) %>% arrange(datetime)
+  user_data = data %>% filter(user == user_id) %>% arrange(datetime)
   user_path = data.frame(user_data %>% st_coordinates())
 
   # Create a palette that maps datetime to colors
   pal = colorFactor(c("green", "red"), domain = user_data$datetime)
+
   map = leaflet() %>%
     addTiles() %>%
     addPolylines(data = user_path, lng = ~X, lat = ~Y) %>%
