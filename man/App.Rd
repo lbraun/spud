@@ -4,13 +4,17 @@
 \alias{App}
 \title{App}
 \description{
-This class represents a spatial app, for example a mobile app that you
-might have installed on your smartphone.
+This class represents a spatial app and its associated usage data.
 }
 \section{Usage}{
 
-\preformatted{x = read.spu("dummy_data.csv")
-app <- App$new("My app", x)
+\preformatted{
+app = App$new("My app", x)
+
+app$users()
+app$user_count()
+app$get_user(user_id)
+app$actions_map(flavor = "leaflet")
 
 print(app)
 }
@@ -19,7 +23,6 @@ print(app)
 \section{Arguments}{
 
 \describe{
-  \item{p}{A \code{process} object.}
   \item{name}{Character scalar, the name of the app.}
   \item{usage_data}{An sf object, representing the usage data for the app.}
 }
@@ -34,6 +37,6 @@ print(app)
 
 \examples{
 x = read.spu("dummy_data.csv")
-app <- App$new("My app", x)
+app = App$new("My app", x)
 
 }

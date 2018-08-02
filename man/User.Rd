@@ -8,8 +8,12 @@ This class represents a user of a spatial app.
 }
 \section{Usage}{
 
-\preformatted{x = read.spu("dummy_data.csv")
-user <- User$new("User 1", x)
+\preformatted{
+user = User$new("User 1", x)
+
+user$first_action()
+user$actions_map(flavor = "leaflet")
+user$path_map()
 
 print(user)
 }
@@ -18,7 +22,6 @@ print(user)
 \section{Arguments}{
 
 \describe{
-  \item{p}{A \code{process} object.}
   \item{id}{Character scalar, the id of the user.}
   \item{usage_data}{An sf object, representing the usage data of the user.}
 }
