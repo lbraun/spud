@@ -6,11 +6,11 @@
 #' \preformatted{
 #' user = User$new("User 1", x)
 #'
+#' print(user)
+#'
 #' user$first_action()
 #' user$actions_map(flavor = "leaflet")
 #' user$path_map()
-#'
-#' print(user)
 #' }
 #'
 #' @section Arguments:
@@ -24,12 +24,20 @@
 #'
 #' \code{$print()} prints out some basic identifying information about the user.
 #'
+#' \code{$first_action()} returns a spatial feature representing the first action of the user.
+#'
+#' \code{$actions_map(flavor = "leaflet")} draws a map showing the spatial distribution of the
+#'    user's activity in the app, color coded by action. Choose either the "leaflet" or "mapview"
+#'    version of the map using the flavor parameter.
+#'
+#' \code{$path_map()} draws a map showing the path of the user over time.
+#'
 #' @importFrom R6 R6Class
 #' @name User
 #' @examples
 #' x = read.spud("dummy_data.csv")
 #' user <- User$new("User 1", x)
-#'
+#' user$actions_map(flavor = "mapview")
 NULL
 
 #' @export

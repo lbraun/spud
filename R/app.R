@@ -6,12 +6,13 @@
 #' \preformatted{
 #' app = App$new("My app", x)
 #'
+#' print(app)
+#'
 #' app$users()
 #' app$user_count()
 #' app$get_user(user_id)
 #' app$actions_map(flavor = "leaflet")
-#'
-#' print(app)
+#' app$first_actions_map()
 #' }
 #'
 #' @section Arguments:
@@ -21,16 +22,30 @@
 #' }
 #'
 #' @section Details:
-#' \code{$new()} sets up the class with two fields: name and usage_data
+#' \code{$new()} sets up the class with two properties: name and usage_data
 #'
 #' \code{$print()} prints out some basic identifying information about the app.
+#'
+#' \code{$users()} returns a vector containing the unique ids of the app's users.
+#'
+#' \code{$user_count()} returns a count of the app's users.
+#'
+#' \code{$get_user(user_id)} returns an object of class User. This object represents the user that
+#'    matches the given id.
+#'
+#' \code{$actions_map(flavor = "leaflet")} draws a map showing the spatial distribution of the app's
+#'    usage, color coded by action. Choose either the "leaflet" or "mapview" version of the map
+#'    using the flavor parameter.
+#'
+#' \code{$first_actions_map()} draws a map showing locations where users tried the app for the first
+#'    time.
 #'
 #' @importFrom R6 R6Class
 #' @name App
 #' @examples
 #' x = read.spud("dummy_data.csv")
 #' app = App$new("My app", x)
-#'
+#' app$actions_map(flavor = "mapview")
 NULL
 
 #' @export

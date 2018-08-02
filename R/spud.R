@@ -10,8 +10,6 @@
 #' @importFrom sf st_as_sf
 #' @importFrom utils read.table
 #' @export
-#'
-#' @examples
 read.spud = function(file, crs = 4326) {
   data = read.table(system.file("extdata", file, package = "spud"), header = TRUE, sep = ",")
   data$datetime = as.POSIXct(strptime(data$datetime, "%Y-%m-%d %H:%M:%S"))
@@ -19,20 +17,30 @@ read.spud = function(file, crs = 4326) {
   spud_object
 }
 
+#' Read data from csv files directly into an App object.
+#'
+#' @param file The name of the file you want to read in.
+#' @param crs The coordinate reference system of the data.
+#' @param name The name of the app.
+#'
+#' @return The resulting App object.
 #' @export
 read.spud_app = function(file, crs = 4326, name) {
   spud_object = read.spud(file, crs)
   App$new(name = name, usage_data = spud_object)
 }
 
+#' Read data from csv files directly into a User object.
+#'
+#' @param file The name of the file you want to read in.
+#' @param crs The coordinate reference system of the data.
+#' @param id The id of the user.
+#'
+#' @return The resulting User object.
 #' @export
 read.spud_user = function(file, crs = 4326, id) {
   spud_object = read.spud(file, crs)
   User$new(id = id, usage_data = spud_object)
-}
-
-appify = function(spud_object) {
-  App$new(name = "My fancy app", usage_data = spud_object)
 }
 
 #' Draw map showing spatial distribution of usage actions using leaflet
@@ -41,8 +49,6 @@ appify = function(spud_object) {
 #'
 #' @importFrom leaflet colorFactor leaflet addTiles addCircles addLegend %>%
 #' @export
-#'
-#' @examples
 plot_usage_actions_leaflet = function(data) {
   # Create a palette that maps actions to colors
   pal = colorFactor(c("navy", "red"), domain = data$action)
@@ -59,8 +65,6 @@ plot_usage_actions_leaflet = function(data) {
 #'
 #' @importFrom mapview mapview
 #' @export
-#'
-#' @examples
 plot_usage_actions_mapview = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
 }
@@ -73,8 +77,6 @@ plot_usage_actions_mapview = function(data) {
 #' @importFrom mapview mapview
 #' @importFrom dplyr group_by top_n
 #' @export
-#'
-#' @examples
 plot_first_actions = function(data) {
   first_actions = data
   first_actions$datetime = as.numeric(first_actions$datetime)
@@ -89,11 +91,10 @@ plot_first_actions = function(data) {
 #' @param data A spud object containing the data to be displayed
 #' @param user_id The identifier of one user
 #'
-#' @importFrom mapview mapview
+#' @importFrom leaflet leaflet addTiles addPolylines addCircles
 #' @importFrom dplyr filter arrange
+#' @importFrom sf st_coordinates
 #' @export
-#'
-#' @examples
 plot_user_path = function(data, user_id) {
   user_data = data %>% filter(user == user_id) %>% arrange(datetime)
   user_path = data.frame(user_data %>% st_coordinates())
@@ -107,6 +108,3 @@ plot_user_path = function(data, user_id) {
     addCircles(data = user_data, popup = ~action, color = ~pal(datetime))
   map
 }
-
-x = read.spud("dummy_data.csv")
-app = appify(x)
