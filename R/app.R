@@ -70,6 +70,11 @@ App = R6::R6Class("App",
       } else {
         stop("Invalid flavor!")
       }
+    },
+
+    first_actions_map = function() {
+      first_actions = self$usage_data %>% group_by(user) %>% top_n(-1, datetime)
+      mapview(first_actions, zcol = "action", legend = TRUE)
     }
   )
 )
