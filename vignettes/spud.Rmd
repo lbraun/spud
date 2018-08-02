@@ -41,7 +41,7 @@ x = read.table(system.file("extdata", "dummy_data.csv", package = "spud"), heade
 knitr::kable(data.frame(head(x, 10)))
 ```
 
-This is achieved with the read.spud method, which takes the source file's name and the coordinate reference system of the data as parameters.
+This is achieved via the `read.spud` method, which takes the source file's name and the coordinate reference system of the data as parameters.
 
 ```{r}
 spud = read.spud(file = "dummy_data.csv", crs = 4326)
@@ -55,13 +55,13 @@ spud
 
 ## Classes
 
-The spud package provides an object-oriented framework for quickly and intuitively exploring spacial usage data. I chose to implement R6 classes because I wanted to learn something new and I read that R6 classes are nice as they resemble classes in other languages.
+The spud package provides an object-oriented framework for quickly and intuitively exploring spatial usage data. I chose to implement R6 classes because I wanted to learn something new and I read that R6 classes are nice as they resemble classes in other languages.
 
 The spud package's two classes represent the most important objects in a location-based service: the application and its users.
 
 ### App class
 
-App is a simple container for application usage data with methods that allow us to visualize the data from a holistic perspective. It is initialized from a simple feature collection, such as the one returned by the `read.spud` method:
+The App class is a simple container for application usage data with methods that allow us to visualize the data from a holistic perspective. It is initialized from a simple feature collection, such as the one returned by the `read.spud` method:
 
 ```{r}
 app = App$new(name = "My fancy app", usage_data = spud)
@@ -79,35 +79,81 @@ App has a print method defined that allows us to quickly know which app we're lo
 print(app)
 ```
 
+Once we have our App object initialized, we might want to know who its users are:
+
+```{r}
+app$users() # The unique ids of our users
+```
+
+```{r}
+app$user_count() # The total number of users
+```
+
+More interestingly, we might want to know _where_ our app has been used. In any app, a user can take certain actions. When we see where our app is used, it is helpful to know what functionality was being used in those locations. Therefore spud provides an `actions_map` method that shows where and for what the app was being used at the same time:
+
+```{r, out.width="100%"}
+app$actions_map()
+```
+
+This method uses the leaflet package by default, but can also be run using the mapview package. The mapview-flavored map shows more information on each data point but uses a less detailed basemap.
+
+```{r, out.width="100%"}
+app$actions_map(flavor = "mapview")
+```
+
+We might also want to know what actions users take and where they tend to be when they first use the app. For this we have the `first_actions_map` method, which plots where each user took their first action:
+
+```{r, out.width="100%"}
+app$first_actions_map()
+```
+
 ### User class
 
-User is a also simple container for application usage data, but with methods focused on the perspective of _just one user_. It can also be initialized from a file or simple feature collection, but often we simply ask an App to get the user object for us:
+The User class is a also simple container for application usage data, but with methods focused on the perspective of _just one user_. It can also be initialized from a file or simple feature collection, but often we simply ask an App to get one of its Users for us:
 
 ```{r}
 user = app$get_user(user_id = 12)
 ```
 
-The user also has a print method defined that identifies who we are looking at:
+Like the App class, the User class also has a print method defined that identifies who we are looking at:
 
 ```{r}
 print(user)
 ```
 
-
-## Maps
-
-If the data contains information on the action a user was taking at the time of measurement, the `plot_usage_actions` method is useful to see how the use of the app is influenced by space. This can be done either with leaflet or with mapview:
+This method makes use of the `first_action` method, which returns information on the very first location record to be recorded for this user:
 
 ```{r}
-plot_usage_actions_leaflet(spud)
-plot_usage_actions_mapview(spud)
+user$first_action()
 ```
 
-```{r}
-plot_first_actions(spud)
+The User class has the same `actions_map` method as the App class. It works the same way but only displays the user's own data:
+
+```{r, out.width="100%"}
+user$actions_map()
 ```
 
-```{r}
-plot_user_path(spud, 1)
+For those who are interested in the temporal dimension as well, spud also allows you to see the user's path around their environment:
+
+```{r, out.width="100%"}
+user$path_map()
+```
+
+
+## General map methods
+
+Both classes make use of shared base plotting methods, so as not to duplicate code unnecessarily.
+
+There are two `plot_usage_actions` methods, one for each mapping package:
+
+```{r, out.width="100%"}
+plot_usage_actions_leaflet(data = spud)
+plot_usage_actions_mapview(data = spud)
+```
+
+The plotting of user paths is also generalized, to allow multiple user paths to be plotted on the same map in the future:
+
+```{r, out.width="100%"}
+plot_user_path(data = spud, user_id = 1)
 ```
 
