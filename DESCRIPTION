@@ -15,3 +15,7 @@ Imports:
     mapview,
     leaflet,
     dplyr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -4,12 +4,12 @@
 \alias{plot_user_path}
 \title{Draw map showing a path of a user over time}
 \usage{
-plot_user_path(data, u)
+plot_user_path(data, user_id)
 }
 \arguments{
 \item{data}{An spu object containing the data to be displayed}
 
-\item{u}{The identifier of one user}
+\item{user_id}{The identifier of one user}
 }
 \description{
 Draw map showing a path of a user over time

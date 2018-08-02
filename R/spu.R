@@ -80,6 +80,7 @@ plot_first_actions = function(data) {
 #' @param user_id The identifier of one user
 #'
 #' @importFrom mapview mapview
+#' @importFrom dplyr filter arrange
 #' @export
 #'
 #' @examples

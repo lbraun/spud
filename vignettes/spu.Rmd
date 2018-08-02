@@ -1,0 +1,40 @@
+---
+title: "Spatial Usage Data Analysis for R"
+author: "Lucas Braun"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Spatial Usage Data Analysis for R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Usage data from location-based services has unique properties. Each event is associated with at least one user, time, and place. However, one or more of these properties is often removed from data in the interest of user privacy.
+
+## Input
+
+The spu package is made to import data from a csv that looks something like this:
+
+```{r, echo=FALSE, results='asis'}
+x = read.table(system.file("extdata", "dummy_data.csv", package = "spu"), header = TRUE, sep = ",")
+knitr::kable(data.frame(head(x, 10)))
+```
+
+This is achieved with the read.spu method, which takes the source file's name and the coordinate reference system of the data as parameters.
+
+## Maps
+
+If the data contains information on the action a user was taking at the time of measurement, the `plot_usage_actions` method is useful to see how the use of the app is influenced by space.
+
+```{r}
+library(spu)
+x = read.spu("dummy_data.csv")
+plot_usage_actions(x)
+```
