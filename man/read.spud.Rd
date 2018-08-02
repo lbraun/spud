@@ -2,7 +2,7 @@
 % Please edit documentation in R/spud.R
 \name{read.spud}
 \alias{read.spud}
-\title{Read data from a csv file in the extdata directory.}
+\title{Read data from csv files in the extdata directory.}
 \usage{
 read.spud(file, crs = 4326)
 }
@@ -15,5 +15,5 @@ read.spud(file, crs = 4326)
 The resulting spud object.
 }
 \description{
-Read data from a csv file in the extdata directory.
+Read data from csv files in the extdata directory.
 }

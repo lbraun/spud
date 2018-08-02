@@ -1,10 +1,6 @@
-#' @importFrom graphics plot
-#' @importFrom utils read.table
-NULL
-
 # spud: R classes and methods for spatial app usage data
 
-#' Read data from a csv file in the extdata directory.
+#' Read data from csv files in the extdata directory.
 #'
 #' @param file The name of the file you want to read in.
 #' @param crs The coordinate reference system of the data.
@@ -12,6 +8,7 @@ NULL
 #' @return The resulting spud object.
 #'
 #' @importFrom sf st_as_sf
+#' @importFrom utils read.table
 #' @export
 #'
 #' @examples
@@ -20,6 +17,18 @@ read.spud = function(file, crs = 4326) {
   data$datetime = as.POSIXct(strptime(data$datetime, "%Y-%m-%d %H:%M:%S"))
   spud_object = sf::st_as_sf(data, coords = c("longitude", "latitude"), crs = crs, agr = "constant")
   spud_object
+}
+
+#' @export
+read.spud_app = function(file, crs = 4326, name) {
+  spud_object = read.spud(file, crs)
+  App$new(name = name, usage_data = spud_object)
+}
+
+#' @export
+read.spud_user = function(file, crs = 4326, id) {
+  spud_object = read.spud(file, crs)
+  User$new(id = id, usage_data = spud_object)
 }
 
 appify = function(spud_object) {
@@ -55,8 +64,6 @@ plot_usage_actions_leaflet = function(data) {
 plot_usage_actions_mapview = function(data) {
   mapview(data, zcol = "action", legend = TRUE)
 }
-
-x = read.spud("dummy_data.csv")
 
 
 #' Draw map showing locations where users tried the app for the first time
